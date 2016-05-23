@@ -36,14 +36,13 @@ public class PontuacaoDAO {
 
 		try {
 			Connection conn = ConectaMySql.obtemConexao();
-			String queryInserir = "UPDATE pontuacao SET senha= ?, usuario_cpf = ? WHERE id = ? ";
+			String queryInserir = "UPDATE pontuacao SET pontos = ?  WHERE usuario_cpf = ? AND empresa_cnpj = ?";
 
 			PreparedStatement ppStm = conn.prepareStatement(queryInserir);
 
-			ppStm.setInt(1, pontuacao.getId());
-			ppStm.setDouble(2, pontuacao.getPontos());
-			ppStm.setString(3, pontuacao.getUsuario_cpf());
-			ppStm.setString(4, pontuacao.getEmpresa_cnpj());
+			ppStm.setDouble(1, 0);
+			ppStm.setString(2, pontuacao.getUsuario_cpf());
+			ppStm.setString(3, pontuacao.getEmpresa_cnpj());
 
 			ppStm.executeUpdate();
 
@@ -59,11 +58,12 @@ public class PontuacaoDAO {
 	public boolean excluirPontuacao(Pontuacao pontuacao) {
 		try {
 			Connection conn = ConectaMySql.obtemConexao();
-			String query = "DELETE FROM pontuacao WHERE  usuario_cpf = ?";
+			String query = "DELETE FROM pontuacao WHERE  usuario_cpf = ? AND empresa_cnpj = ?";
 
 			PreparedStatement ppStm = conn.prepareStatement(query);
 
 			ppStm.setString(1, pontuacao.getUsuario_cpf());
+			ppStm.setString(2, pontuacao.getEmpresa_cnpj());
 
 			ppStm.executeUpdate();
 
@@ -98,6 +98,41 @@ public class PontuacaoDAO {
 				usr.setPontos(resultSet.getDouble(2));
 				usr.setUsuario_cpf(resultSet.getString(3));
 				usr.setEmpresa_cnpj(resultSet.getString(4));
+
+				lista.add(usr);
+			}
+
+			conn.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return lista;
+	}
+
+	public ArrayList<PontuacaoNew> buscarPontuacaoUsuario(String cpf) {
+
+		ArrayList<PontuacaoNew> lista = new ArrayList<PontuacaoNew>();
+
+		try {
+			Connection conn = ConectaMySql.obtemConexao();
+			String query = "SELECT DISTINCT e.descricao, p.pontos "
+					+ "FROM fidelidade.usuario u, fidelidade.empresa e, "
+					+ "fidelidade.pontuacao p WHERE p.usuario_cpf = ? "
+					+ "AND e.cnpj = p.empresa_cnpj order by e.descricao;";
+
+			PreparedStatement ppStm = conn.prepareStatement(query);
+
+			ppStm.setString(1, cpf);
+
+			ResultSet resultSet = ppStm.executeQuery();
+
+			while (resultSet.next()) {
+				PontuacaoNew usr = new PontuacaoNew();
+
+				usr.setDescricao(resultSet.getString(1));
+				usr.setPontos(resultSet.getDouble(2));
 
 				lista.add(usr);
 			}
