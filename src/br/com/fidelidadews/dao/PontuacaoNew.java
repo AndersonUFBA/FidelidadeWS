@@ -87,7 +87,7 @@ public class PontuacaoNew {
 	@Override
 	public String toString() {
 		return "PontuacaoNew [id=" + id + ", descricao=" + descricao
-				+ ", pontos=" + pontos + ", usuario_cpf=" + usuario_cpf + "]";
+				+ ", pontos=" + pontos + ", usuario_cpf=" + usuario_cpf ;
 	}
 
 
