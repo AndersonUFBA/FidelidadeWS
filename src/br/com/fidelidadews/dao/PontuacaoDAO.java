@@ -117,7 +117,7 @@ public class PontuacaoDAO {
 
 		try {
 			Connection conn = ConectaMySql.obtemConexao();
-			String query = "SELECT DISTINCT e.descricao, sum(p.pontos)/4 "
+			String query = "SELECT DISTINCT e.descricao, sum(DISTINCT p.pontos) "
 					+ "FROM fidelidade.usuario u, fidelidade.empresa e, "
 					+ "fidelidade.pontuacao p WHERE p.usuario_cpf = ? "
 					+ "AND e.cnpj = p.empresa_cnpj group by e.descricao;";
