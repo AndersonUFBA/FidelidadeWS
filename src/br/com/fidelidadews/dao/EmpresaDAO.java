@@ -21,8 +21,8 @@ public class EmpresaDAO {
 			ppStm.setString(1, empresa.getCnpj());
 			ppStm.setString(2, empresa.getSenha());
 			ppStm.setString(3, empresa.getDescricao());
-			ppStm.setString(4, empresa.getLatitude());
-			ppStm.setString(5, empresa.getLongitude());
+			ppStm.setDouble(4, empresa.getLatitude());
+			ppStm.setDouble(5, empresa.getLongitude());
 
 			ppStm.executeUpdate();
 
@@ -46,8 +46,8 @@ public class EmpresaDAO {
 			ppStm.setString(5, empresa.getCnpj());
 			ppStm.setString(1, empresa.getSenha());
 			ppStm.setString(2, empresa.getDescricao());
-			ppStm.setString(3, empresa.getLatitude());
-			ppStm.setString(4, empresa.getLongitude());
+			ppStm.setDouble(3, empresa.getLatitude());
+			ppStm.setDouble(4, empresa.getLongitude());
 
 			ppStm.executeUpdate();
 
@@ -81,7 +81,7 @@ public class EmpresaDAO {
 	}
 
 	public boolean excluirEmpresa(String cnpj) {
-		return excluirEmpresa(new Empresa(cnpj, "", "", "", ""));
+		return excluirEmpresa(new Empresa(cnpj, "", "", null, null));
 	}
 
 	public ArrayList<Empresa> buscarTodosEmpresas() {
@@ -101,8 +101,8 @@ public class EmpresaDAO {
 				usr.setCnpj(resultSet.getString(1));
 				usr.setSenha(resultSet.getString(2));
 				usr.setDescricao(resultSet.getString(3));
-				usr.setLatitude(resultSet.getString(4));
-				usr.setLongitude(resultSet.getString(5));
+				usr.setLatitude(resultSet.getDouble(4));
+				usr.setLongitude(resultSet.getDouble(5));
 
 				lista.add(usr);
 			}
@@ -134,8 +134,8 @@ public class EmpresaDAO {
 				usr.setCnpj(resultSet.getString(1));
 				usr.setSenha(resultSet.getString(2));
 				usr.setDescricao(resultSet.getString(3));
-				usr.setLatitude(resultSet.getString(4));
-				usr.setLongitude(resultSet.getString(5));
+				usr.setLatitude(resultSet.getDouble(4));
+				usr.setLongitude(resultSet.getDouble(5));
 			} else {
 				return usr;
 			}
